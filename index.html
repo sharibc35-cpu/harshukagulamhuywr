@@ -9,22 +9,21 @@ body {
   background: linear-gradient(#ffe6f0,#c2f0c2);
   text-align:center; overflow:hidden;
 }
-h1,h2 {
-  font-size:45px; color:#ff4da6; text-shadow:2px 2px 5px #fff; margin:15px;
-}
-button {
-  cursor:pointer; border:none; border-radius:25px;
-  padding:12px 35px; font-size:24px; color:white;
-  background:#ff80bf; margin:10px;
-  box-shadow:0px 5px 15px rgba(255,102,178,0.5);
+h1,h2 {font-size:45px;color:#ff4da6;text-shadow:2px 2px 5px #fff;margin:15px;}
+#clickArea {
+  display:inline-block; padding:20px 50px; margin:30px;
+  font-size:36px; color:white; background:#ff80bf; border-radius:30px;
+  cursor:pointer; box-shadow:0px 5px 15px rgba(255,102,178,0.5);
   transition:0.3s;
 }
-button:hover { transform:scale(1.05); background:#ff4da6; }
+#clickArea:hover { background:#ff4da6; transform:scale(1.05);}
 #flowersContainer{position:absolute;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
 .flower{position:absolute;font-size:18px;top:-50px;animation:fall linear forwards;}
 @keyframes fall{0%{top:-50px;}100%{top:100vh;}}
-#passwordBox,#quizBox,#lastQuestion{display:none; margin-top:30px;}
-input{padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1;}
+#passwordBox,#quizBox,#lastQuestion{display:none;margin-top:30px;}
+input{padding:10px;font-size:22px;border-radius:15px;border:2px solid #ffb3d1;}
+button{cursor:pointer;border:none;border-radius:25px;padding:12px 35px;font-size:24px;color:white;background:#ff80bf;margin:10px;transition:0.3s;}
+button:hover{background:#ff4da6;transform:scale(1.05);}
 </style>
 </head>
 <body>
@@ -32,7 +31,8 @@ input{padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1
 <h1>WELCOME HARSHU 💖</h1>
 <h2>Kya haal hai Harshu? Bacha khana khaya? 🍪</h2>
 <h2>Welcome Bby 😍</h2>
-<button id="startBtn">START 🌸</button>
+
+<div id="clickArea">CLICK 🌸</div>
 
 <div id="passwordBox">
 <input type="password" id="pwdInput" placeholder="Enter password"/>
@@ -54,10 +54,8 @@ input{padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1
 <div id="flowersContainer"></div>
 
 <script>
-// Ensure DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",function(){
 
-  // Flower rain
   function createFlowers(num){
     const container=document.getElementById('flowersContainer');
     for(let i=0;i<num;i++){
@@ -71,17 +69,15 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   }
 
-  // START button click
-  const startBtn=document.getElementById('startBtn');
-  startBtn.addEventListener('click', function(){
-    startBtn.style.display='none';
-    createFlowers(10000); // 10k flowers
+  const clickArea=document.getElementById('clickArea');
+  clickArea.addEventListener('click',function(){
+    clickArea.style.display='none';
+    createFlowers(10000);
     document.getElementById('passwordBox').style.display='block';
     document.getElementById('pwdInput').focus();
   });
 
-  // PASSWORD submit
-  document.getElementById('pwdBtn').addEventListener('click', function(){
+  document.getElementById('pwdBtn').addEventListener('click',function(){
     const pwd=document.getElementById('pwdInput').value;
     if(pwd.toLowerCase()=='harshukagulam'){
       document.getElementById('passwordBox').style.display='none';
@@ -89,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function(){
     } else { alert('Wrong password 😭 Try again!'); }
   });
 
-  // Quiz Data
   const quizData=[
     {q:'Apka pyara bchu kon hai? 💕', options:['Eshir','Arjun','Harsh','Inam'], answer:'Eshir', type:'mcq'},
     {q:'Aap sb se zeda pyaar kis se krthe ho? ___', answer:'Eshir', type:'fill'},
@@ -98,13 +93,11 @@ document.addEventListener("DOMContentLoaded", function(){
   ];
   let currentQ=0;
 
-  // START Quiz
   function startQuiz(){
     document.getElementById('quizBox').style.display='block';
     showQuestion();
   }
 
-  // SHOW Question
   function showQuestion(){
     const q=quizData[currentQ];
     document.getElementById('quizQ').innerText=q.q;
@@ -127,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   }
 
-  // CHECK ANSWER
   function checkAnswer(ans){
     const q=quizData[currentQ];
     if(q.type=='fill') ans=document.getElementById('fillInput').value;
@@ -138,27 +130,24 @@ document.addEventListener("DOMContentLoaded", function(){
     } else { alert('❌ Galat Jawab 😭'); }
   }
 
-  // CANCEL button
-  document.getElementById('cancelBtn').addEventListener('click', function(){
+  document.getElementById('cancelBtn').addEventListener('click',function(){
     alert('😭 Rone laga!');
   });
 
-  // LAST Question
   function showLastQuestion(){
     document.getElementById('quizBox').style.display='none';
     document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000); // 20k flowers
+    createFlowers(20000);
     document.getElementById('lastQuestion').style.display='block';
   }
 
-  // FINISH
-  document.getElementById('finishBtn').addEventListener('click', function(){
+  document.getElementById('finishBtn').addEventListener('click',function(){
     const val=document.getElementById('lastAnswer').value;
     alert(`Bye bby 😍\nYou said: ${val}`);
   });
 
-}); // DOMContentLoaded
+});
 </script>
 
 </body>
-</html>
+</html>  
