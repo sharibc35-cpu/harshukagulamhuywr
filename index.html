@@ -32,6 +32,7 @@ button:hover{background:#ff4da6;transform:scale(1.05);}
 <h2>Kya haal hai Harshu? Bacha khana khaya? 🍪</h2>
 <h2>Welcome Bby 😍</h2>
 
+<!-- CLICK area instead of START button -->
 <div id="clickArea">CLICK 🌸</div>
 
 <div id="passwordBox">
@@ -69,14 +70,16 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }
 
+  // CLICK area triggers everything
   const clickArea=document.getElementById('clickArea');
   clickArea.addEventListener('click',function(){
     clickArea.style.display='none';
-    createFlowers(10000);
+    createFlowers(10000); // 10k flowers
     document.getElementById('passwordBox').style.display='block';
     document.getElementById('pwdInput').focus();
   });
 
+  // PASSWORD submit
   document.getElementById('pwdBtn').addEventListener('click',function(){
     const pwd=document.getElementById('pwdInput').value;
     if(pwd.toLowerCase()=='harshukagulam'){
@@ -85,6 +88,7 @@ document.addEventListener("DOMContentLoaded",function(){
     } else { alert('Wrong password 😭 Try again!'); }
   });
 
+  // Quiz Data
   const quizData=[
     {q:'Apka pyara bchu kon hai? 💕', options:['Eshir','Arjun','Harsh','Inam'], answer:'Eshir', type:'mcq'},
     {q:'Aap sb se zeda pyaar kis se krthe ho? ___', answer:'Eshir', type:'fill'},
@@ -137,7 +141,7 @@ document.addEventListener("DOMContentLoaded",function(){
   function showLastQuestion(){
     document.getElementById('quizBox').style.display='none';
     document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000);
+    createFlowers(20000); // 20k flowers
     document.getElementById('lastQuestion').style.display='block';
   }
 
@@ -150,4 +154,4 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 
 </body>
-</html>  
+</html>
