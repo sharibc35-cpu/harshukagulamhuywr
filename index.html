@@ -1,95 +1,82 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Harshu Cute Surprise 💖</title>
+<title>Harshu Cute Quiz 💖</title>
 <style>
 body {
     margin:0;
     font-family:'Comic Sans MS', cursive;
     overflow:hidden;
-    background: linear-gradient(#ffe6f0,#c2f0c2); /* soft cute pastel sky + garden */
+    background: linear-gradient(#ffe6f0,#c2f0c2);
     text-align:center;
 }
-h1 { font-size:60px; margin-top:50px; color:#ff4da6; text-shadow:2px 2px 5px #fff;}
+h1,h2 { font-size:50px; color:#ff4da6; text-shadow:2px 2px 5px #fff;}
 button {
     cursor:pointer;
     border:none;
     border-radius:25px;
-    padding:20px 60px;
-    font-size:36px;
+    padding:15px 40px;
+    font-size:28px;
     color:white;
     background:#ff80bf;
+    margin:10px;
     box-shadow:0px 5px 15px rgba(255,102,178,0.5);
     transition:0.3s;
 }
 button:hover { transform:scale(1.05); background:#ff4da6;}
-#passwordBox { display:none; margin-top:30px;}
-#msgBox { display:none; width:350px; margin:20px auto; padding:25px;
-    background:#fff0f5; border-radius:25px; box-shadow:0 0 20px #ff80bf;
-    font-size:22px; color:#ff3399;}
-.character {
-    font-size:150px;
-    position:absolute;
-    bottom:150px;
-    left:50%;
-    transform:translateX(-50%);
-    animation:jump 2s infinite;
-}
-.mouth { display:block; font-size:50px; }
-@keyframes jump { 0%,100%{bottom:150px;} 50%{bottom:250px;} }
-
 #flowers{position:absolute;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
 .flower{position:absolute;font-size:20px;top:-50px;animation:fall linear forwards;}
 @keyframes fall{0%{top:-50px;}100%{top:100vh;}}
-#garden{position:absolute;bottom:0;width:100%;height:180px;background:linear-gradient(#a3dca3,#66cc66);z-index:-1;border-top-left-radius:50px;border-top-right-radius:50px;}
-#gameArea{display:none; margin-top:30px;}
-.balloon{width:50px;height:70px;border-radius:50% 50% 50% 50%;position:absolute;cursor:pointer;animation:floatUp 6s linear infinite;}
-@keyframes floatUp{0%{bottom:-100px;}100%{bottom:100vh;}}
+#passwordBox,#quizBox,#lastQuestion{display:none; margin-top:30px;}
+input{padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1;}
+.correct{color:#66ff66;}
+.wrong{color:#ff3333;}
 </style>
 </head>
 <body>
 
-<div id="flowers"></div>
-<div id="garden"></div>
-
-<h1>WELCOME 💖</h1>
-<button id="startBtn" onclick="showPassword()">START</button>
+<h1>WELCOME HARSHU 💖</h1>
+<h2>Kya haal hai Harshu? Bacha khana khaya? 🍪</h2>
+<h2>Welcome Bby 😍</h2>
+<button id="startBtn" onclick="startFlowers()">START 🌸</button>
 
 <div id="passwordBox">
-    <input type="password" id="pwdInput" placeholder="Enter password" style="padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1;">
+    <input type="password" id="pwdInput" placeholder="Enter password"/>
     <button onclick="checkPassword()">Submit</button>
 </div>
 
-<div id="msgBox"><p id="msgText"></p></div>
-
-<div id="characterDiv">
-    <div class="character">🐶🌸<span class="mouth">👄</span></div>
-    <p id="characterMsg" style="font-size:22px;color:#ff3366; text-align:center; margin-top:10px;"></p>
+<div id="quizBox">
+    <h2 id="quizQ"></h2>
+    <div id="options"></div>
+    <button onclick="nextCancel('cancel')">Cancel 😭</button>
 </div>
 
-<div id="gameArea"><h2 style="color:#ff3399;">Pop the balloons 🎈</h2></div>
+<div id="lastQuestion">
+    <h2>Aap Eshir ko kya bolti ho? ___</h2>
+    <input type="text" id="lastAnswer"/>
+    <button onclick="finishQuiz()">Submit</button>
+</div>
 
-<audio id="eshirVoice" src="eshir_hello.mp3"></audio>
+<div id="flowersContainer"></div>
 
 <script>
-// 🌸 Flower rain
-function createFlowers(){
-    for(let i=0;i<200;i++){
+// Flower rain
+function createFlowers(num){
+    for(let i=0;i<num;i++){
         let f=document.createElement('div');
         f.className='flower';
         f.style.left=Math.random()*window.innerWidth+'px';
-        f.style.fontSize=(15+Math.random()*15)+'px';
-        f.style.animationDuration=(3+Math.random()*2)+'s';
+        f.style.fontSize=(10+Math.random()*15)+'px';
+        f.style.animationDuration=(2+Math.random()*3)+'s';
         f.innerHTML='🌸';
-        document.getElementById('flowers').appendChild(f);
+        document.getElementById('flowersContainer').appendChild(f);
     }
 }
-createFlowers();
 
-// Start -> password
-function showPassword(){
+// Start button
+function startFlowers(){
+    createFlowers(10000);
     document.getElementById('startBtn').style.display='none';
     document.getElementById('passwordBox').style.display='block';
 }
@@ -99,41 +86,99 @@ function checkPassword(){
     let pwd=document.getElementById('pwdInput').value;
     if(pwd.toLowerCase()=='harshukagulam'){
         document.getElementById('passwordBox').style.display='none';
-        document.getElementById('msgBox').style.display='block';
-        document.getElementById('msgText').innerText='🎉 Congratulations Harshu! You are the one!';
-        setTimeout(showCharacter,2000);
-    } else{ alert('Wrong password! Try again.'); }
+        startQuiz();
+    } else alert('Wrong password 😭 Try again!');
 }
 
-// Show character + voice + mouth animation
-function showCharacter(){
-    document.getElementById('msgBox').style.display='none';
-    let charDiv=document.getElementById('characterDiv');
-    charDiv.style.display='block';
-    document.getElementById('characterMsg').innerText='Hello Harshu! I am Eshir 💕 I love you sooo much 😍';
-
-    let audio=document.getElementById('eshirVoice');
-    let mouth=document.querySelector('.mouth');
-    audio.play();
-
-    // Cute mouth animation while audio plays
-    let interval=setInterval(()=>{mouth.style.display=mouth.style.display==='none'?'inline':'none';},200);
-    audio.onended=()=>{clearInterval(interval); mouth.style.display='inline'; setTimeout(startGame,1000);}
-}
-
-// Mini balloon game
-function startGame(){
-    let gameArea=document.getElementById('gameArea');
-    gameArea.style.display='block';
-    for(let i=0;i<7;i++){
-        let b=document.createElement('div');
-        b.className='balloon';
-        b.style.background=['#ff4da6','#ffb3d1','#ffe066','#80dfff','#99ff99','#ff99cc','#ffcc99'][i];
-        b.style.left=Math.random()*window.innerWidth+'px';
-        b.style.bottom='-100px';
-        b.onclick=function(){this.style.display='none';}
-        gameArea.appendChild(b);
+// Quiz data
+const quizData=[
+    {
+        q:'Apka pyara bchu kon hai? 💕',
+        options:['Eshir','Arjun','Harsh','Inam'],
+        answer:'Eshir',
+        type:'mcq'
+    },
+    {
+        q:'Aap sb se zeda pyaar kis se krthe ho? ___',
+        answer:'Eshir',
+        type:'fill'
+    },
+    {
+        q:'Eshir ki date birth kia h?',
+        options:['21,01,2008','09,09,2008','10,03,2009','10,10,2007'],
+        answer:'21,01,2008',
+        type:'mcq'
+    },
+    {
+        q:'Aap mere sath kitni khush ho?',
+        options:['100000%','100%','10%','unlimited khush ho'],
+        answer:'unlimited khush ho',
+        type:'mcq'
     }
+];
+
+let currentQ=0;
+
+function startQuiz(){
+    document.getElementById('quizBox').style.display='block';
+    showQuestion();
+}
+
+function showQuestion(){
+    const q=quizData[currentQ];
+    document.getElementById('quizQ').innerText=q.q;
+    const opts=document.getElementById('options');
+    opts.innerHTML='';
+    if(q.type=='mcq'){
+        q.options.forEach(o=>{
+            let btn=document.createElement('button');
+            btn.innerText=o;
+            btn.onclick=()=>checkAnswer(o);
+            opts.appendChild(btn);
+        });
+    } else if(q.type=='fill'){
+        let input=document.createElement('input');
+        input.id='fillInput';
+        input.placeholder='Type here...';
+        let subBtn=document.createElement('button');
+        subBtn.innerText='Submit';
+        subBtn.onclick=checkAnswer;
+        opts.appendChild(input);
+        opts.appendChild(subBtn);
+    }
+}
+
+function checkAnswer(ans){
+    const q=quizData[currentQ];
+    if(q.type=='fill'){
+        ans=document.getElementById('fillInput').value;
+    }
+    if(ans.toLowerCase()==q.answer.toLowerCase()){
+        alert('✅ Sahi Jawab! 😍');
+        currentQ++;
+        if(currentQ<quizData.length) showQuestion();
+        else showLastQuestion();
+    } else {
+        alert('❌ Galat Jawab 😭');
+    }
+}
+
+function nextCancel(act){
+    if(act=='cancel'){
+        alert('😭 Rone laga!');
+    }
+}
+
+function showLastQuestion(){
+    document.getElementById('quizBox').style.display='none';
+    document.getElementById('flowersContainer').innerHTML='';
+    createFlowers(20000); // last 20k flowers
+    document.getElementById('lastQuestion').style.display='block';
+}
+
+function finishQuiz(){
+    let val=document.getElementById('lastAnswer').value;
+    alert(`Bye bby 😍\nYou said: ${val}`);
 }
 </script>
 </body>
