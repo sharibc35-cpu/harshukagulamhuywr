@@ -1,57 +1,140 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Cute Website</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial;
-            background-color: #ffe6f0;
-        }
+<meta charset="UTF-8">
+<title>Harshu Cute Surprise 💖</title>
+<style>
+body {
+    margin:0;
+    font-family:'Comic Sans MS', cursive;
+    overflow:hidden;
+    background: linear-gradient(#ffe6f0,#c2f0c2); /* soft cute pastel sky + garden */
+    text-align:center;
+}
+h1 { font-size:60px; margin-top:50px; color:#ff4da6; text-shadow:2px 2px 5px #fff;}
+button {
+    cursor:pointer;
+    border:none;
+    border-radius:25px;
+    padding:20px 60px;
+    font-size:36px;
+    color:white;
+    background:#ff80bf;
+    box-shadow:0px 5px 15px rgba(255,102,178,0.5);
+    transition:0.3s;
+}
+button:hover { transform:scale(1.05); background:#ff4da6;}
+#passwordBox { display:none; margin-top:30px;}
+#msgBox { display:none; width:350px; margin:20px auto; padding:25px;
+    background:#fff0f5; border-radius:25px; box-shadow:0 0 20px #ff80bf;
+    font-size:22px; color:#ff3399;}
+.character {
+    font-size:150px;
+    position:absolute;
+    bottom:150px;
+    left:50%;
+    transform:translateX(-50%);
+    animation:jump 2s infinite;
+}
+.mouth { display:block; font-size:50px; }
+@keyframes jump { 0%,100%{bottom:150px;} 50%{bottom:250px;} }
 
-        #mainContent {
-            display: none;
-            margin-top: 50px;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 20px;
-            border: none;
-            border-radius: 10px;
-            background: #ff4d6d;
-            color: white;
-            cursor: pointer;
-        }
-
-        .character {
-            font-size: 80px;
-        }
-
-        .message {
-            font-size: 25px;
-            margin-top: 20px;
-            color: #ff1a75;
-        }
-    </style>
+#flowers{position:absolute;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+.flower{position:absolute;font-size:20px;top:-50px;animation:fall linear forwards;}
+@keyframes fall{0%{top:-50px;}100%{top:100vh;}}
+#garden{position:absolute;bottom:0;width:100%;height:180px;background:linear-gradient(#a3dca3,#66cc66);z-index:-1;border-top-left-radius:50px;border-top-right-radius:50px;}
+#gameArea{display:none; margin-top:30px;}
+.balloon{width:50px;height:70px;border-radius:50% 50% 50% 50%;position:absolute;cursor:pointer;animation:floatUp 6s linear infinite;}
+@keyframes floatUp{0%{bottom:-100px;}100%{bottom:100vh;}}
+</style>
 </head>
-
 <body>
 
-    <h1>Welcome 😍</h1>
-    <button onclick="startSite()">Start 💖</button>
+<div id="flowers"></div>
+<div id="garden"></div>
 
-    <div id="mainContent">
-        <div class="character">👧🌸</div>
-        <div class="message">Hi Harshu 💖</div>
-        <div class="message">Ye Eshir ne diya hai flower aap ke liye 🌸</div>
-    </div>
+<h1>WELCOME 💖</h1>
+<button id="startBtn" onclick="showPassword()">START</button>
 
-    <script>
-        function startSite() {
-            document.getElementById("mainContent").style.display = "block";
-        }
-    </script>
+<div id="passwordBox">
+    <input type="password" id="pwdInput" placeholder="Enter password" style="padding:10px; font-size:22px; border-radius:15px; border:2px solid #ffb3d1;">
+    <button onclick="checkPassword()">Submit</button>
+</div>
 
+<div id="msgBox"><p id="msgText"></p></div>
+
+<div id="characterDiv">
+    <div class="character">🐶🌸<span class="mouth">👄</span></div>
+    <p id="characterMsg" style="font-size:22px;color:#ff3366; text-align:center; margin-top:10px;"></p>
+</div>
+
+<div id="gameArea"><h2 style="color:#ff3399;">Pop the balloons 🎈</h2></div>
+
+<audio id="eshirVoice" src="eshir_hello.mp3"></audio>
+
+<script>
+// 🌸 Flower rain
+function createFlowers(){
+    for(let i=0;i<200;i++){
+        let f=document.createElement('div');
+        f.className='flower';
+        f.style.left=Math.random()*window.innerWidth+'px';
+        f.style.fontSize=(15+Math.random()*15)+'px';
+        f.style.animationDuration=(3+Math.random()*2)+'s';
+        f.innerHTML='🌸';
+        document.getElementById('flowers').appendChild(f);
+    }
+}
+createFlowers();
+
+// Start -> password
+function showPassword(){
+    document.getElementById('startBtn').style.display='none';
+    document.getElementById('passwordBox').style.display='block';
+}
+
+// Check password
+function checkPassword(){
+    let pwd=document.getElementById('pwdInput').value;
+    if(pwd.toLowerCase()=='harshukagulam'){
+        document.getElementById('passwordBox').style.display='none';
+        document.getElementById('msgBox').style.display='block';
+        document.getElementById('msgText').innerText='🎉 Congratulations Harshu! You are the one!';
+        setTimeout(showCharacter,2000);
+    } else{ alert('Wrong password! Try again.'); }
+}
+
+// Show character + voice + mouth animation
+function showCharacter(){
+    document.getElementById('msgBox').style.display='none';
+    let charDiv=document.getElementById('characterDiv');
+    charDiv.style.display='block';
+    document.getElementById('characterMsg').innerText='Hello Harshu! I am Eshir 💕 I love you sooo much 😍';
+
+    let audio=document.getElementById('eshirVoice');
+    let mouth=document.querySelector('.mouth');
+    audio.play();
+
+    // Cute mouth animation while audio plays
+    let interval=setInterval(()=>{mouth.style.display=mouth.style.display==='none'?'inline':'none';},200);
+    audio.onended=()=>{clearInterval(interval); mouth.style.display='inline'; setTimeout(startGame,1000);}
+}
+
+// Mini balloon game
+function startGame(){
+    let gameArea=document.getElementById('gameArea');
+    gameArea.style.display='block';
+    for(let i=0;i<7;i++){
+        let b=document.createElement('div');
+        b.className='balloon';
+        b.style.background=['#ff4da6','#ffb3d1','#ffe066','#80dfff','#99ff99','#ff99cc','#ffcc99'][i];
+        b.style.left=Math.random()*window.innerWidth+'px';
+        b.style.bottom='-100px';
+        b.onclick=function(){this.style.display='none';}
+        gameArea.appendChild(b);
+    }
+}
+</script>
 </body>
-  </html>
+</html>
