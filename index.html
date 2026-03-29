@@ -4,15 +4,61 @@
 <meta charset="UTF-8">
 <title>Harshu Smooth Quiz 💖</title>
 <style>
-body { margin:0; font-family:'Comic Sans MS', cursive; background: linear-gradient(#ffe6f0,#c2f0c2); text-align:center; overflow:hidden;}
-h1,h2 {font-size:45px;color:#ff4da6;text-shadow:2px 2px 5px #fff;margin:15px;}
-#passwordBox,#quizBox,#lastQuestion{margin-top:30px;}
-input{padding:10px;font-size:22px;border-radius:15px;border:2px solid #ffb3d1;}
-button{cursor:pointer;border:none;border-radius:25px;padding:12px 35px;font-size:24px;color:white;background:#ff80bf;margin:10px;transition:0.3s;}
-button:hover{background:#ff4da6;transform:scale(1.05);}
-#flowersContainer{position:absolute;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
-.flower{position:absolute;font-size:18px;top:-50px;animation:fall linear forwards;}
-@keyframes fall{0%{top:-50px;}100%{top:100vh;}}
+body {
+  margin:0;
+  font-family:'Comic Sans MS', cursive;
+  background: linear-gradient(#ffe6f0,#c2f0c2);
+  text-align:center;
+  overflow:hidden;
+}
+h1, h2 {
+  font-size:45px;
+  color:#ff4da6;
+  text-shadow:2px 2px 5px #fff;
+  margin:15px;
+}
+#passwordBox, #quizBox, #lastQuestion {
+  margin-top:30px;
+}
+input {
+  padding:10px;
+  font-size:22px;
+  border-radius:15px;
+  border:2px solid #ffb3d1;
+}
+button {
+  cursor:pointer;
+  border:none;
+  border-radius:25px;
+  padding:12px 35px;
+  font-size:24px;
+  color:white;
+  background:#ff80bf;
+  margin:10px;
+  transition:0.3s;
+}
+button:hover {
+  background:#ff4da6;
+  transform:scale(1.05);
+}
+#flowersContainer {
+  position:absolute;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+}
+.flower {
+  position:absolute;
+  font-size:18px;
+  top:-50px;
+  animation:fall linear forwards;
+}
+@keyframes fall {
+  0%{top:-50px;}
+  100%{top:100vh;}
+}
 </style>
 </head>
 <body>
@@ -21,21 +67,21 @@ button:hover{background:#ff4da6;transform:scale(1.05);}
 <h2>Kya haal hai Harshu? Bacha khana khaya? 🍪</h2>
 <h2>Welcome Bby 😍</h2>
 
-<!-- Password Box -->
+<!-- PASSWORD BOX (direct on page) -->
 <div id="passwordBox">
-<input type="password" id="pwdInput" placeholder="Enter password"/>
+  <input type="password" id="pwdInput" placeholder="Enter password and press Enter" autocomplete="off"/>
 </div>
 
-<!-- Quiz Box -->
+<!-- QUIZ QUESTIONS -->
 <div id="quizBox" style="display:none;">
-<h2 id="quizQ"></h2>
-<div id="options"></div>
+  <h2 id="quizQ"></h2>
+  <div id="options"></div>
 </div>
 
-<!-- Last Question -->
+<!-- LAST QUESTION -->
 <div id="lastQuestion" style="display:none;">
-<h2>Aap Eshir ko kya bolti ho? ___</h2>
-<input type="text" id="lastAnswer"/>
+  <h2>Aap Eshir ko kya bolti ho? ___</h2>
+  <input type="text" id="lastAnswer" placeholder="Type & press Enter"/>
 </div>
 
 <div id="flowersContainer"></div>
@@ -44,86 +90,97 @@ button:hover{background:#ff4da6;transform:scale(1.05);}
 document.addEventListener("DOMContentLoaded",function(){
 
   function createFlowers(num){
-    const container=document.getElementById('flowersContainer');
+    const container = document.getElementById('flowersContainer');
     for(let i=0;i<num;i++){
-      let f=document.createElement('div');
-      f.className='flower';
-      f.style.left=Math.random()*window.innerWidth+'px';
-      f.style.fontSize=(10+Math.random()*15)+'px';
-      f.style.animationDuration=(2+Math.random()*3)+'s';
-      f.innerHTML='🌸';
+      let f = document.createElement('div');
+      f.className = 'flower';
+      f.style.left = Math.random()*window.innerWidth+'px';
+      f.style.fontSize = (10 + Math.random()*15)+'px';
+      f.style.animationDuration = (2+Math.random()*3)+'s';
+      f.innerHTML = '🌸';
       container.appendChild(f);
     }
   }
 
-  createFlowers(1000); // initial small flowers
+  createFlowers(1000); // initial smaller flower rain
 
-  // Password Enter
-  const pwdInput=document.getElementById('pwdInput');
+  // ENTER PRESS FOR PASSWORD
+  const pwdInput = document.getElementById('pwdInput');
+  pwdInput.focus();
+
   pwdInput.addEventListener('keyup',function(e){
-    if(e.key==='Enter'){
-      const pwd=pwdInput.value;
-      if(pwd.toLowerCase()=='harshukagulam'){
-        document.getElementById('passwordBox').style.display='none';
-        createFlowers(10000); // flowers after password
+    if(e.key === 'Enter'){
+      const pwd = pwdInput.value.trim();
+      if(pwd.toLowerCase() === 'harshukagulam'){
+        document.getElementById('passwordBox').style.display = 'none';
+        createFlowers(10000); // big flower rain after correct password
         startQuiz();
-      } else { alert('❌ Wrong password 😭 Try again!'); }
+      } else {
+        alert('❌ Wrong password 😭 Try again!');
+      }
     }
   });
 
-  const quizData=[
-    {q:'Apka pyara bchu kon hai? 💕', options:['Eshir','Arjun','Harsh','Inam'], answer:'Eshir', type:'mcq'},
-    {q:'Aap sb se zeda pyaar kis se krthe ho? ___', answer:'Eshir', type:'fill'},
-    {q:'Eshir ki date birth kia h?', options:['21,01,2008','09,09,2008','10,03,2009','10,10,2007'], answer:'21,01,2008', type:'mcq'},
-    {q:'Aap mere sath kitni khush ho?', options:['100000%','100%','10%','unlimited khush ho'], answer:'unlimited khush ho', type:'mcq'}
+  const quizData = [
+    { q:'Apka pyara bchu kon hai? 💕',      type:'mcq',  options:['Eshir','Arjun','Harsh','Inam'], answer:'Eshir' },
+    { q:'Aap sb se zeda pyaar kis se krthe ho? ___', type:'fill', answer:'Eshir' },
+    { q:'Eshir ki date birth kia h?',       type:'mcq',  options:['21,01,2008','09,09,2008','10,03,2009','10,10,2007'], answer:'21,01,2008' },
+    { q:'Aap mere sath kitni khush ho?',    type:'mcq',  options:['100000%','100%','10%','unlimited khush ho'], answer:'unlimited khush ho' }
   ];
-  let currentQ=0;
+
+  let currentQ = 0;
 
   function startQuiz(){
-    document.getElementById('quizBox').style.display='block';
+    document.getElementById('quizBox').style.display = 'block';
     showQuestion();
   }
 
   function showQuestion(){
-    const q=quizData[currentQ];
-    document.getElementById('quizQ').innerText=q.q;
-    const opts=document.getElementById('options');
-    opts.innerHTML='';
-    if(q.type=='mcq'){
+    const q = quizData[currentQ];
+    document.getElementById('quizQ').innerText = q.q;
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+
+    if(q.type === 'mcq'){
       q.options.forEach(o=>{
-        const btn=document.createElement('button');
-        btn.innerText=o;
-        btn.addEventListener('click',()=>checkAnswer(o));
+        const btn = document.createElement('button');
+        btn.innerText = o;
+        btn.addEventListener('click', ()=> checkAnswer(o));
         opts.appendChild(btn);
       });
-    } else if(q.type=='fill'){
-      const input=document.createElement('input');
-      input.id='fillInput'; input.placeholder='Type here...';
+    } else if(q.type === 'fill'){
+      const input = document.createElement('input');
+      input.id = 'fillInput';
+      input.placeholder = 'Type answer & press Enter';
       input.addEventListener('keyup',function(e){
         if(e.key==='Enter') checkAnswer();
       });
       opts.appendChild(input);
+      input.focus();
     }
   }
 
   function checkAnswer(ans){
-    const q=quizData[currentQ];
-    if(q.type=='fill') ans=document.getElementById('fillInput').value;
-    if(ans.toLowerCase()==q.answer.toLowerCase()){
+    const q = quizData[currentQ];
+    if(q.type==='fill') ans = document.getElementById('fillInput').value.trim();
+    if(ans.toLowerCase() === q.answer.toLowerCase()){
       currentQ++;
-      if(currentQ<quizData.length) showQuestion();
-      else showLastQuestion();
-    } else { alert('❌ Galat Jawab 😭'); }
+      if(currentQ < quizData.length) showQuestion();
+      else finishQuiz();
+    } else {
+      alert('❌ Galat Jawab 😭');
+    }
   }
 
-  function showLastQuestion(){
-    document.getElementById('quizBox').style.display='none';
-    document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000); // final flowers
-    document.getElementById('lastQuestion').style.display='block';
-    
-    // Enter key for last answer
-    const lastInput=document.getElementById('lastAnswer');
+  function finishQuiz(){
+    document.getElementById('quizBox').style.display = 'none';
+    document.getElementById('flowersContainer').innerHTML = '';
+    createFlowers(20000); // final big flower rain
+
+    // SHOW LAST QUESTION input
+    document.getElementById('lastQuestion').style.display = 'block';
+    const lastInput = document.getElementById('lastAnswer');
+    lastInput.focus();
     lastInput.addEventListener('keyup',function(e){
       if(e.key==='Enter'){
         alert(`Bye bby 😍\nYou said: ${lastInput.value}`);
