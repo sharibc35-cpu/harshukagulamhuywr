@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Cute Website</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background-color: #ffe6f0;
+        }
+
+        #mainContent {
+            display: none;
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #ff4d6d;
+            color: white;
+            cursor: pointer;
+        }
+
+        .character {
+            font-size: 80px;
+        }
+
+        .message {
+            font-size: 25px;
+            margin-top: 20px;
+            color: #ff1a75;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Welcome 😍</h1>
+    <button onclick="startSite()">Start 💖</button>
+
+    <div id="mainContent">
+        <div class="character">👧🌸</div>
+        <div class="message">Hi Harshu 💖</div>
+        <div class="message">Ye Eshir ne diya hai flower aap ke liye 🌸</div>
+    </div>
+
+    <script>
+        function startSite() {
+            document.getElementById("mainContent").style.display = "block";
+        }
+    </script>
+
+</body>
+  </html>
