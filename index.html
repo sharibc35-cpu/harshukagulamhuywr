@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,17 +21,19 @@ button:hover{background:#ff4da6;transform:scale(1.05);}
 <h2>Kya haal hai Harshu? Bacha khana khaya? 🍪</h2>
 <h2>Welcome Bby 😍</h2>
 
-<!-- Direct Password Box -->
+<!-- Password Box -->
 <div id="passwordBox">
 <input type="password" id="pwdInput" placeholder="Enter password"/>
 </div>
 
-<div id="quizBox">
+<!-- Quiz Box -->
+<div id="quizBox" style="display:none;">
 <h2 id="quizQ"></h2>
 <div id="options"></div>
 </div>
 
-<div id="lastQuestion">
+<!-- Last Question -->
+<div id="lastQuestion" style="display:none;">
 <h2>Aap Eshir ko kya bolti ho? ___</h2>
 <input type="text" id="lastAnswer"/>
 </div>
@@ -54,18 +56,17 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }
 
-  // Initial small flowers
-  createFlowers(1000);
+  createFlowers(1000); // initial flowers
 
-  // Auto start quiz after password input (Enter key)
+  // Password Enter
   const pwdInput=document.getElementById('pwdInput');
   pwdInput.addEventListener('keyup',function(e){
     if(e.key==='Enter'){
       const pwd=pwdInput.value;
       if(pwd.toLowerCase()=='harshukagulam'){
         document.getElementById('passwordBox').style.display='none';
-        createFlowers(10000); // 10k flowers
-        startQuiz();
+        createFlowers(10000);
+        startQuiz(); // MCQ automatic
       } else { alert('❌ Wrong password 😭 Try again!'); }
     }
   });
@@ -118,8 +119,16 @@ document.addEventListener("DOMContentLoaded",function(){
   function showLastQuestion(){
     document.getElementById('quizBox').style.display='none';
     document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000); // 20k flowers
+    createFlowers(20000);
     document.getElementById('lastQuestion').style.display='block';
+    
+    // Enter key for last answer
+    const lastInput=document.getElementById('lastAnswer');
+    lastInput.addEventListener('keyup',function(e){
+      if(e.key==='Enter'){
+        alert(`Bye bby 😍\nYou said: ${lastInput.value}`);
+      }
+    });
   }
 
 });
