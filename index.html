@@ -4,11 +4,7 @@
 <meta charset="UTF-8">
 <title>Harshu Smooth Quiz 💖</title>
 <style>
-body {
-  margin:0; font-family:'Comic Sans MS', cursive;
-  background: linear-gradient(#ffe6f0,#c2f0c2);
-  text-align:center; overflow:hidden;
-}
+body { margin:0; font-family:'Comic Sans MS', cursive; background: linear-gradient(#ffe6f0,#c2f0c2); text-align:center; overflow:hidden;}
 h1,h2 {font-size:45px;color:#ff4da6;text-shadow:2px 2px 5px #fff;margin:15px;}
 #passwordBox,#quizBox,#lastQuestion{margin-top:30px;}
 input{padding:10px;font-size:22px;border-radius:15px;border:2px solid #ffb3d1;}
@@ -28,19 +24,16 @@ button:hover{background:#ff4da6;transform:scale(1.05);}
 <!-- Direct Password Box -->
 <div id="passwordBox">
 <input type="password" id="pwdInput" placeholder="Enter password"/>
-<button id="pwdBtn">Submit</button>
 </div>
 
 <div id="quizBox">
 <h2 id="quizQ"></h2>
 <div id="options"></div>
-<button id="cancelBtn">Cancel 😭</button>
 </div>
 
 <div id="lastQuestion">
 <h2>Aap Eshir ko kya bolti ho? ___</h2>
 <input type="text" id="lastAnswer"/>
-<button id="finishBtn">Submit</button>
 </div>
 
 <div id="flowersContainer"></div>
@@ -61,16 +54,20 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }
 
-  // Page open pe flowers optional
-  createFlowers(10000);
+  // Initial small flowers
+  createFlowers(1000);
 
-  // PASSWORD submit
-  document.getElementById('pwdBtn').addEventListener('click',function(){
-    const pwd=document.getElementById('pwdInput').value;
-    if(pwd.toLowerCase()=='harshukagulam'){
-      document.getElementById('passwordBox').style.display='none';
-      startQuiz();
-    } else { alert('Wrong password 😭 Try again!'); }
+  // Auto start quiz after password input (Enter key)
+  const pwdInput=document.getElementById('pwdInput');
+  pwdInput.addEventListener('keyup',function(e){
+    if(e.key==='Enter'){
+      const pwd=pwdInput.value;
+      if(pwd.toLowerCase()=='harshukagulam'){
+        document.getElementById('passwordBox').style.display='none';
+        createFlowers(10000); // 10k flowers
+        startQuiz();
+      } else { alert('❌ Wrong password 😭 Try again!'); }
+    }
   });
 
   const quizData=[
@@ -101,10 +98,10 @@ document.addEventListener("DOMContentLoaded",function(){
     } else if(q.type=='fill'){
       const input=document.createElement('input');
       input.id='fillInput'; input.placeholder='Type here...';
-      const subBtn=document.createElement('button');
-      subBtn.innerText='Submit';
-      subBtn.addEventListener('click',checkAnswer);
-      opts.appendChild(input); opts.appendChild(subBtn);
+      input.addEventListener('keyup',function(e){
+        if(e.key==='Enter') checkAnswer();
+      });
+      opts.appendChild(input);
     }
   }
 
@@ -118,24 +115,15 @@ document.addEventListener("DOMContentLoaded",function(){
     } else { alert('❌ Galat Jawab 😭'); }
   }
 
-  document.getElementById('cancelBtn').addEventListener('click',function(){
-    alert('😭 Rone laga!');
-  });
-
   function showLastQuestion(){
     document.getElementById('quizBox').style.display='none';
     document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000);
+    createFlowers(20000); // 20k flowers
     document.getElementById('lastQuestion').style.display='block';
   }
-
-  document.getElementById('finishBtn').addEventListener('click',function(){
-    const val=document.getElementById('lastAnswer').value;
-    alert(`Bye bby 😍\nYou said: ${val}`);
-  });
 
 });
 </script>
 
 </body>
-</html>     
+</html>
