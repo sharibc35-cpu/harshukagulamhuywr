@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }
 
-  createFlowers(1000); // initial flowers
+  createFlowers(1000); // initial small flowers
 
   // Password Enter
   const pwdInput=document.getElementById('pwdInput');
@@ -65,8 +65,8 @@ document.addEventListener("DOMContentLoaded",function(){
       const pwd=pwdInput.value;
       if(pwd.toLowerCase()=='harshukagulam'){
         document.getElementById('passwordBox').style.display='none';
-        createFlowers(10000);
-        startQuiz(); // MCQ automatic
+        createFlowers(10000); // flowers after password
+        startQuiz();
       } else { alert('❌ Wrong password 😭 Try again!'); }
     }
   });
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded",function(){
   function showLastQuestion(){
     document.getElementById('quizBox').style.display='none';
     document.getElementById('flowersContainer').innerHTML='';
-    createFlowers(20000);
+    createFlowers(20000); // final flowers
     document.getElementById('lastQuestion').style.display='block';
     
     // Enter key for last answer
